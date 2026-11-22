@@ -29,8 +29,9 @@ Fail: grandparent(tom,X)
 == 2 answers ==
 ```
 
-- Which of its lines push a frame onto Activity 15's runtime stack? Which
-  lines pop one?
+## Q1
+Every Call line pushes a frame. Line 2 pushes grandparent(tom,X), and lines 3, 5, and 9 push the parent goals one level deeper, which the indentation shows. Every Exit or Fail line pops a frame and returns to the caller. Line 4 pops parent(tom,liz) with a result, line 6 pops parent(liz,X) with nothing, and line 11 pops grandparent(tom,ann). The last pop is the Fail on line 23, when grandparent(tom,X) has no answers left. Redo lines (7, 13, 14, 18, 19, and 21) are neither, since they only resume a goal that already exited.
+
 - What does a `Redo` line resume that a returned frame cannot?
 - Why does swapping the two clauses of `reach/2` change whether the search
   ever answers, while swapping the two clauses of `ancestor/2` only changes
