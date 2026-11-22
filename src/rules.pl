@@ -62,8 +62,14 @@ rev([H|T], R) :-				% deconstruct list
 
 % last_of(List, X): X is the last element of List. The empty list has no
 % last element, so last_of([], X) must fail.
-last_of(_, _) :-
-    throw(not_implemented(last_of/2)).
+
+% base case: one element list
+last_of([X], X).				% unify X to the last element
+
+% recurse: x-element list
+last_of([_|T], X) :-			% deconstruct list
+	T \= [],					% tail is not empty
+    last_of(T, X).				% recurse with tail
 
 %%% R3 -- the graph.
 
