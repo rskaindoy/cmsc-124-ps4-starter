@@ -52,7 +52,7 @@ count_of(X, [Y|T], N) :-
 % rev(List, Reversed): Reversed holds the elements of List in the other
 % order. Reverse the tail. Then use join/3 to put the head at the end.
 
-% base case - empty list is same reversed
+% base case - empty list is same when reversed
 rev([], []).
 
 % recursive call
@@ -67,9 +67,9 @@ rev([H|T], R) :-				% deconstruct list
 last_of([X], X).				% unify X to the last element
 
 % recurse: x-element list
+% [] cannot be deconstructed, hence is ignored
 last_of([_|T], X) :-			% deconstruct list
-	T \= [],					% tail is not empty
-    last_of(T, X).				% recurse with tail
+    last_of(T, X).				% recurse only with tail
 
 %%% R3 -- the graph.
 
