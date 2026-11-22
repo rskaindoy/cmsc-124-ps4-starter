@@ -35,8 +35,19 @@ descendant(_, _) :-
 
 % count_of(X, List, N): X occurs N times in List. N is 0 for the empty
 % list, which is your base case.
-count_of(_, _, _) :-
-    throw(not_implemented(count_of/3)).
+
+% base case: empty list
+count_of(_, [], 0).
+
+% recurse: head matches
+count_of(X, [X|T], N) :-
+	count_of(X, T, M),
+	N is M + 1.
+
+% recurse: head doesnt match
+count_of(X, [Y|T], N) :-
+	X \= Y,
+	count_of(X, T, N).
 
 % rev(List, Reversed): Reversed holds the elements of List in the other
 % order. Reverse the tail. Then use join/3 to put the head at the end.
