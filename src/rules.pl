@@ -35,18 +35,41 @@ descendant(_, _) :-
 
 % count_of(X, List, N): X occurs N times in List. N is 0 for the empty
 % list, which is your base case.
-count_of(_, _, _) :-
-    throw(not_implemented(count_of/3)).
+
+% base case: empty list
+count_of(_, [], 0).
+
+% recurse: head matches
+count_of(X, [X|T], N) :-
+	count_of(X, T, M),
+	N is M + 1.
+
+% recurse: head doesnt match
+count_of(X, [Y|T], N) :-
+	X \= Y,
+	count_of(X, T, N).
 
 % rev(List, Reversed): Reversed holds the elements of List in the other
 % order. Reverse the tail. Then use join/3 to put the head at the end.
-rev(_, _) :-
-    throw(not_implemented(rev/2)).
+
+% base case - empty list is same when reversed
+rev([], []).
+
+% recursive call
+rev([H|T], R) :-				% deconstruct list
+	rev(T, Rev),				% recurse with tail
+	join(Rev, [H], R).			% joins head after tail (reversed)
 
 % last_of(List, X): X is the last element of List. The empty list has no
 % last element, so last_of([], X) must fail.
-last_of(_, _) :-
-    throw(not_implemented(last_of/2)).
+
+% base case: one element list
+last_of([X], X).				% unify X to the last element
+
+% recurse: x-element list
+% [] cannot be deconstructed, hence is ignored
+last_of([_|T], X) :-			% deconstruct list
+    last_of(T, X).				% recurse only with tail
 
 %%% R3 -- the graph.
 
