@@ -5,7 +5,5 @@ for one case. Then answer three questions about it.
 
 - Which of its lines push a frame onto Activity 15's runtime stack? Which
   lines pop one?
-- Why does swapping the two clauses of `reach/2` change whether the search
-  ever answers, while swapping the two clauses of `ancestor/2` only changes
-  the order of the answers?
 - `Redo` resumes the goal's preserved execution state and executes the next untried clauses, searching for any potential matches and undoing variable bindings made previously, from whatever frame is currently at the top of the stack - which remained intact when it exited. A returned frame has already been popped from the stack, its memory was already deallocated and permanently lost and thus cannot resume from the last operation. It can be visually seen in the trace where we can see that `Redo` sits along the same level as the last `Exit`. 
+- The difference is present in the subgoal order in the body of their recursive clause. `ancestor/2` is right recursive in both variants: it checks the knowledge base for the first match of an existing fact for `parent/2` first before it decides whether to run it on the recursive rule (short-circuiting). The same isn't true for `reach/2`, where one variant is left recursive: it attempts to evaluate the recursive rule first, which caused it to infinitely recurse by matching it with the first head it sees from the knowledge base each time it is called, and never even reaching the following subgoals until the stack overflows. The right recursive rule prevented it by short-circuiting an invalid match on the first subgoal, though it did end up with an infinte searching state instead (limited to this knowledge base where all edges connected as a cycle).
